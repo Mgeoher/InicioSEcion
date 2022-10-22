@@ -35,12 +35,22 @@ public class NewServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             usuario = new Usuario();
-            if(usuario.validarUsuario(request.getParameter("user"), request.getParameter("pass"))==true){
+            String user = request.getParameter("user");
+            String pass = request.getParameter("pass");
+            if(user.equals("")||pass.equals("")){
+                request.setAttribute("success", 0);
+                request.setAttribute("mensaje", "Campo usuario y contraseña son requeridos");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+            }
+            
+            String usuarioConsultado= usuario.validarUsuario(request.getParameter("user"), request.getParameter("pass"));
+            if(usuarioConsultado.equals(request.getParameter("user"))){
                request.getSession().setAttribute("user", request.getParameter("user"));
                 request.getSession().setAttribute("pass", request.getParameter("pass"));
                 response.sendRedirect(request.getContextPath()+"/UsuarioController");              
             }else{
                 request.setAttribute("success", 0);
+                request.setAttribute("mensaje", "Usuario y/o contraseña no encontrado");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
             }            
         }
