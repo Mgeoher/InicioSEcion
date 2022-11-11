@@ -23,7 +23,7 @@
                 </c:if>
             <h1>Bienvenido</h1>
             <div class="abs-center">
-            <form action="NewServlet" method="POST">
+            <form action="ServletUser" method="POST">
             <div class="form-group">
               <label for="exampleInputEmail1">Ingrese usuario</label>
               <input type="text" class="form-control" name="user" id="user" aria-describedby="emailHelp" placeholder="Ingrese usuario">

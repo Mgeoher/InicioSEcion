@@ -44,8 +44,8 @@ public class AlumnoController {
    
     
     public String guardarAlumno2(Alumno alumno){        
-        String sql = "INSERT INTO universidad.alumno(numero_carne, nombre, correo, direccion, genero_idgenero) ";
-             sql += " VALUES(?,?,?,?,?)";              
+        String sql = "INSERT INTO pruebausuario.estudiante(codigo, nombre, correo, direccion)";
+               sql += "VALUES(?,?,?,?)";              
        try{     
             abrirConexion();
             statement = conexion.prepareStatement(sql); 
@@ -53,7 +53,7 @@ public class AlumnoController {
             statement.setString(2, alumno.getNombre());
             statement.setString(3, alumno.getCorreo());
             statement.setString(4, alumno.getDireccion());
-            statement.setInt(5, alumno.getTipo());
+            
                 int resultado = statement.executeUpdate(); 
                 if(resultado > 0){
                     return String.valueOf(resultado);
@@ -66,7 +66,7 @@ public class AlumnoController {
     }
     
     public void getAlumnos2(StringBuffer respuesta){   
-        String sql="select * from universidad.alumno";
+        String sql="SELECT * FROM pruebausuario.estudiante;";
         try{
         abrirConexion();
         statement= conexion.prepareStatement(sql);                        
@@ -74,7 +74,7 @@ public class AlumnoController {
             if (result!=null){
                 while (result.next()){
                 respuesta.append("<tr>");
-                respuesta.append("<td >").append(result.getString("numero_carne")).append("</td>");
+                respuesta.append("<td >").append(result.getString("codigo")).append("</td>");
                 respuesta.append("<td >").append(result.getString("nombre")).append("</td>");
                 respuesta.append("<td >").append(result.getString("direccion")).append("</td>");
                 respuesta.append("<td >").append(result.getString("correo")).append("</td>");

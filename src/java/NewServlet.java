@@ -1,9 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+
+import Clases.Alumno;
+import Clases.AlumnoController;
+import Clases.ConexionBaseDeDatos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,15 +15,26 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 /**
  *
- * @author mgeoh
+ * @author JP
  */
 @WebServlet(urlPatterns = {"/NewServlet"})
 public class NewServlet extends HttpServlet {
-    Usuario usuario;
-
+    Alumno alumno;
+    AlumnoController registroAlumno;
+     Alumno[] alumnosRegistrados;
+     StringBuffer objetoRespuesta = new StringBuffer();
+    
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,26 +47,46 @@ public class NewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            usuario = new Usuario();
-            String user = request.getParameter("user");
-            String pass = request.getParameter("pass");
-            if(user.equals("")||pass.equals("")){
-                request.setAttribute("success", 0);
-                request.setAttribute("mensaje", "Campo usuario y contraseña son requeridos");
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
-            }
+        try ( PrintWriter respuesta = response.getWriter()) {            
+           
+           registroAlumno=new AlumnoController();
+           String control = request.getParameter("control");
+           
+           if(control.toUpperCase().equals("GUARDAR")){
+               alumno=new Alumno(
+                Integer.parseInt(request.getParameter("codigo")),
+                request.getParameter("nombre"),
+                request.getParameter("correo"),
+                request.getParameter("direccion"),
+                Integer.parseInt(request.getParameter("opcion")));                
+                registroAlumno.guardarAlumno2(alumno);//almacenarlo en BD                 
+           }else if(control.toUpperCase().equals("ELIMINAR")){
+               int codigoEliminar= Integer.parseInt(request.getParameter("codigo_alumno"));
+               registroAlumno.eliminarALumno(codigoEliminar);
+           }
+                        
             
-            String usuarioConsultado= usuario.validarUsuario(request.getParameter("user"), request.getParameter("pass"));
-            if(usuarioConsultado.equals(request.getParameter("user"))){
-               request.getSession().setAttribute("user", request.getParameter("user"));
-                request.getSession().setAttribute("pass", request.getParameter("pass"));
-                response.sendRedirect(request.getContextPath()+"/UsuarioController");              
-            }else{
-                request.setAttribute("success", 0);
-                request.setAttribute("mensaje", "Usuario y/o contraseña no encontrado");
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
-            }            
+            registroAlumno.guardarAlumno(alumno);//almacenarlo en el array
+            alumnosRegistrados= registroAlumno.getAlumnos();// consultar alumnos en el array                       
+                    
+           registroAlumno.getAlumnos2(objetoRespuesta);//consultar alumnos en la BD
+           respuesta.write(objetoRespuesta.toString());             
+            
+           
+            for (int i = 0; i < alumnosRegistrados.length; i++){
+                   //if(!alumnosRegistrados[i].getCodigo().isEmpty()){
+                    if(alumnosRegistrados[i].getCodigo()>0){
+                       respuesta.println("<tr><td>" + alumnosRegistrados[i].getCodigo()+ "</td>");
+                       respuesta.println("<td>" + alumnosRegistrados[i].getNombre() + "</td>");
+                       respuesta.println("<td>" + alumnosRegistrados[i].getDireccion()+ "</td>");
+                       respuesta.println("<td>" + alumnosRegistrados[i].getCorreo()+ "</td>");
+                       respuesta.println("<td>" + alumnosRegistrados[i].getTipo()+ "</td>");
+                       respuesta.println("<td>"
+                               + "<button type=\"button\" class=\"btn btn-warning\"></i>Editar</button> "
+                               + "<button type=\"button\" class=\"btn btn-danger\">Eliminar</button>"
+                               + "</td></tr>");
+                    }
+                }
         }
     }
 
