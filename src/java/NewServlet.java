@@ -57,8 +57,7 @@ public class NewServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("codigo")),
                 request.getParameter("nombre"),
                 request.getParameter("correo"),
-                request.getParameter("direccion"),
-                Integer.parseInt(request.getParameter("opcion")));                
+                request.getParameter("direccion"));                
                 registroAlumno.guardarAlumno2(alumno);//almacenarlo en BD                 
            }else if(control.toUpperCase().equals("ELIMINAR")){
                int codigoEliminar= Integer.parseInt(request.getParameter("codigo_alumno"));
@@ -80,7 +79,6 @@ public class NewServlet extends HttpServlet {
                        respuesta.println("<td>" + alumnosRegistrados[i].getNombre() + "</td>");
                        respuesta.println("<td>" + alumnosRegistrados[i].getDireccion()+ "</td>");
                        respuesta.println("<td>" + alumnosRegistrados[i].getCorreo()+ "</td>");
-                       respuesta.println("<td>" + alumnosRegistrados[i].getTipo()+ "</td>");
                        respuesta.println("<td>"
                                + "<button type=\"button\" class=\"btn btn-warning\"></i>Editar</button> "
                                + "<button type=\"button\" class=\"btn btn-danger\">Eliminar</button>"

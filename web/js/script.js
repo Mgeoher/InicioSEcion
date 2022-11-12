@@ -22,19 +22,7 @@ function enviarFormularioOpcion2(){
           };   
           XHR.send(formData);         
 }
-function sendDataPro(){
-	const XHR = new XMLHttpRequest();
-	  var formData = new URLSearchParams(new FormData(document.getElementById('form'))).toString();
-	  XHR.addEventListener('error',(event) => {alert('Oops! ah ocurrido un error (T_T)');});
-	  XHR.open('POST', 'NewServlet', true);
-          XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    
-          XHR.onload = () => { if (XHR.readyState === XHR.DONE && XHR.status === 200){
-            console.log("response => " + XHR.response);
-            document.getElementById('bodyTable').innerHTML=XHR.response;
-            susMsj('Registro Exitoso'); }};
-          XHR.send(formData);	
-}
+
 function susMsj(msj){
   Swal.fire({
   icon: 'success',

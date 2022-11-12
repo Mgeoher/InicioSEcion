@@ -16,7 +16,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="js/script.js" type="text/javascript"></script>
-        <a href="../src/java/NewServlet.java"></a>
     </head>
     <% 
         response.setHeader("Cache-Control", "nocache, no-store, must-revalidate");
@@ -93,7 +92,6 @@
             
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" onclick="enviarFormularioOpcion2()" class="btn btn-success">Guardar con JS</button>
-            <button type="button" onclick="sendDataPro()" class="btn btn-success">Guardar con JS 2</button>
              <button type="reset" class="btn btn-danger">Cancelar</button>
         </form>  
         <br>
